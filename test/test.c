@@ -18,9 +18,33 @@
 #define TRIS_LED1   TRISEbits.TRISE2
 #define ANS_LED1    ANSELbits.ANS7
 
+#define PIN_LED2    PORTEbits.RE1
+#define TRIS_LED2   TRISEbits.TRISE1
+#define ANS_LED2    ANSELbits.ANS6
+
+#define PIN_LED3    PORTEbits.RE0
+#define TRIS_LED3   TRISEbits.TRISE0
+#define ANS_LED3    ANSELbits.ANS5
+
+#define PIN_LED4    PORTAbits.RA5
+#define TRIS_LED4   TRISAbits.TRISA5
+#define ANS_LED4    ANSELbits.ANS4
+
 #define PIN_TEC1    PORTBbits.RB0
 #define TRIS_TEC1   TRISBbits.TRISB0
 #define ANS_TEC1    ANSELHbits.ANS12
+
+#define PIN_TEC2    PORTBbits.RB1
+#define TRIS_TEC2   TRISBbits.TRISB1
+#define ANS_TEC2    ANSELHbits.ANS10
+
+#define PIN_TEC3    PORTBbits.RB2
+#define TRIS_TEC3   TRISBbits.TRISB2
+#define ANS_TEC3    ANSELHbits.ANS8
+
+#define PIN_TEC4    PORTBbits.RB3
+#define TRIS_TEC4   TRISBbits.TRISB3
+#define ANS_TEC4    ANSELHbits.ANS9
 
 void user_main   ( void );
 void setup_memory( void );
@@ -103,25 +127,6 @@ int test( void ) {
         return 1;
     }
 
-    PIN_TEC1 = 1;
-
-    for( int i = 0 ; i < 5 ; i++ ) {
-        __delay_ms(100);
-        gpio_toggle_bounce(PIN_TEC1, i);
-        __delay_ms(100);
-        gpio_toggle_bounce(PIN_TEC1, i);
-
-        __delay_ms(100);
-        if( PIN_LED1 == i%2 ) {
-            printf(
-                "El LED1 no queda %s después de presionar la TEC1 por %d° vez.\n",
-                i%2 == 0 ? "encendido" : "apagado",
-                i+1
-            );
-            return 1;
-        }
-    }
-
     return 0;
 }
 
@@ -134,6 +139,8 @@ int test( void ) {
 int test_config( void ) {
     int ret_value = 0;
 
+    /*-----------------------------------------------------------------------*/
+
     if( ANS_TEC1 != 0 ) {
         printf("La TEC1 está configurada como entrada analógica.\n");
         ret_value = 1;
@@ -143,6 +150,44 @@ int test_config( void ) {
         printf("La TEC1 no está configurada como entrada.\n");
         ret_value = 1;
     }
+
+    /*-----------------------------------------------------------------------*/
+
+    if( ANS_TEC2 != 0 ) {
+        printf("La TEC2 está configurada como entrada analógica.\n");
+        ret_value = 1;
+    }
+
+    if( TRIS_TEC2 != 1 ) {
+        printf("La TEC2 no está configurada como entrada.\n");
+        ret_value = 1;
+    }
+
+    /*-----------------------------------------------------------------------*/
+
+    if( ANS_TEC3 != 0 ) {
+        printf("La TEC3 está configurada como entrada analógica.\n");
+        ret_value = 1;
+    }
+
+    if( TRIS_TEC3 != 1 ) {
+        printf("La TEC3 no está configurada como entrada.\n");
+        ret_value = 1;
+    }
+
+    /*-----------------------------------------------------------------------*/
+
+    if( ANS_TEC4 != 0 ) {
+        printf("La TEC4 está configurada como entrada analógica.\n");
+        ret_value = 1;
+    }
+
+    if( TRIS_TEC4 != 1 ) {
+        printf("La TEC4 no está configurada como entrada.\n");
+        ret_value = 1;
+    }
+
+    /*-----------------------------------------------------------------------*/
 
     if( ANS_LED1 != 0 ) {
         printf("El LED1 está configurado como entrada analógica.\n");
@@ -154,9 +199,30 @@ int test_config( void ) {
         ret_value = 1;
     }
 
-    if( PIN_LED1 != 0 ) {
-        printf("El LED1 no queda apagado al inicio.\n");
+    /*-----------------------------------------------------------------------*/
+
+    if( ANS_LED3 != 0 ) {
+        printf("El LED3 está configurado como entrada analógica.\n");
         ret_value = 1;
+    }
+    
+    if( TRIS_LED3 != 0 ) {
+        printf("El LED3 no está configurado como salida.\n");
+        ret_value = 1;
+    }
+
+    /*-----------------------------------------------------------------------*/
+
+    if( TXSTAbits.BRGH != 0 || SPBRG != 25 || BAUDCTLbits.BRG16 != 1 ) {
+        printf("La UART no está correctamente configurada para un baudrate de 9600.\n");
+    }
+
+    if( TXSTAbits.TX9 != 0 || TXSTAbits.TXEN != 1 || TXSTAbits.SYNC != 0 ) {
+        printf("La UART no está correctamente configurada para transmitir.\n");
+    }
+
+    if( RCSTAbits.RX9 != 0 || RCSTAbits.CREN != 1 || RCSTAbits.SPEN != 1 ) {
+        printf("La UART no está correctamente configurada para recibir.\n");
     }
 
     return ret_value;
