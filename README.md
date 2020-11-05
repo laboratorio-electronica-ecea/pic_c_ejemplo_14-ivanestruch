@@ -19,8 +19,8 @@ En este ejemplo se implementará un sistema de registro de datos con las siguien
     ```
 3. Recuerda que para que cualquier terminal detecte el fin de línea se debe enviar `\r\n`.
 4. Cuando se recibe la letra `'D'` por puerto serie, debe reiniciar los contadores de las teclas.
-5. Si se recibe un comando válido debe parpadear el led verde (100 ms).
-    Si se recibe un comando inválido debe parpadear el led rojo (100 ms).
+5. Si se recibe un comando válido debe parpadear el led verde (100 ms).  
+   Si se recibe un comando inválido debe parpadear el led rojo (100 ms).
 
 Se utiliza el entorno de desarrollo MPLAB X v5.30 y el compilador XC8 v2.20.
 
